@@ -1,0 +1,39 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+
+
+{% block main_win %}
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Note Keeper</h1>
+        <p class="lead">Keep your notes everywhere whit you.<br> Just try, it is great tool.</p>
+
+      </div>
+
+    </div><!-- /.container -->
+    {% if not user_name %}
+    <div class="container">
+
+
+      <form action="/login/" class="form-signin" method="post">
+        {% csrf_token %}
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input  class="form-control" type="text" name = "login" placeholder="Login" required autofocus>
+        <input  class="form-control" type="password" name = "password" placeholder="password" required autofocus>
+
+         {% if login_error %}
+            <div class="container">
+            <label class="error">{{ login_error }}</label>
+            </div>
+          {% endif %}
+        <input class="btn btn-lg btn-success btn-block" type="submit" value="Sign in">
+        <a  href="/registration/" class="btn btn-lg btn-primary btn-block">Register</a>
+      </form>
+
+
+    </div> <!-- /container -->
+    {% endif %}
+{% endblock %}
+

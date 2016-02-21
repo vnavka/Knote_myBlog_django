@@ -1,0 +1,17 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+{% block people_view %}
+
+    {% for u,k in data %}
+    <div class="container">
+        <div class="span3 well">
+            <center>
+            <a href="/people/view/{{u.id}}" data-toggle="modal" data-target="#myModal"><img src={{k}} name="aboutme" width="200" height="200" class="img-circle"></a>
+            <h3>{{u.username}}</h3>
+            <em>click my face for more</em>
+                <!--<a  href="/people/view/{{u.id}}" class="btn btn-xs btn-danger btn-block">Delete</a>-->
+            </center>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

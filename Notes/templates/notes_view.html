@@ -1,0 +1,78 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+{% block notes_view %}
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+            <div id="postlist">
+                <a class="pull-left" href="#">
+                    <img class="media-object img-circle" src={{userimage.user_image_pass}}  style="width:100px;height:100px;">
+                </a>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="pull-left">{{note.knote_title}}</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h4 class="pull-right">
+                                    <small><em>{{note.knote_date}}</em></small>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="panel-body">
+                    {{note.knote_note}}
+                </div>
+                    <!-- likes-->
+            </div>
+        </div>
+             <!--comments -->
+            {% for i in comments %}
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{i.comment_login}}</strong>
+                    </div>
+                    <div class="panel-body">
+                        {{i.comment_text}}
+                    </div><!-- /panel-body -->
+                </div><!-- /panel panel-default -->
+            </div><!-- /col-sm-5 -->
+            {% endfor %}
+
+    </div>
+        <div class="col-md-1"></div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-1">
+            </div>
+    </div>
+            <div class="container">
+                <h5 class = "pull-right"></h5>
+            </div>
+    </div>
+
+    <div class="container">
+        <div class="col-md-6">
+                   <!--<form class="form-signin">-->
+                    <form action="/home/add_comment/" method="post">
+                        {% csrf_token %}
+                           <h3 class="form-signin-heading">Add Comment</h3>
+
+                           <input  class="form-control" type="text" name = "comment_title" placeholder="Add comment here" required autofocus><span></span>
+                        <br/>
+
+                       <p><button type="submit" class="btn  btn-lg btn-primary btn-block" value={{ note.id }} name="note_id">+Comment</button></p>
+                   </form>
+          <!--</form>-->
+        </div>
+
+    </div>
+{% endblock %}
+

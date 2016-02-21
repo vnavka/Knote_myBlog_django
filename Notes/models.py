@@ -1,0 +1,30 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+# Create your models here.
+
+class KNote(models.Model):
+    class Meta:
+        db_table = "KNote"
+
+    knote_title = models.CharField(max_length = 200)
+    knote_note = models.TextField()
+    knote_date = models.DateTimeField()
+    knote_views = models.IntegerField(default=0)
+    knote_host = models.ForeignKey(User)
+
+
+class Comments(models.Model):
+    class Meta:
+        db_table = "Comments"
+
+    comment_login = models.CharField(max_length = 300,default = "guest")
+    comment_text = models.CharField(max_length = 300)
+    comment_note = models.ForeignKey(KNote)
+
+class UserImage(models.Model):
+    class Meta:
+        db_table = "UserImages"
+
+    user_image_host = models.ForeignKey(User)
+    user_image_pass = models.CharField(max_length=200,default="/static/media/def.png")

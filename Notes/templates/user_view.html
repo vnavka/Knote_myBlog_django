@@ -1,0 +1,61 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+{% block user_view %}
+<br>
+
+ <div class="container">
+	<div class="row">
+		<div class="col-sm-1 col-md-1 user-details">
+            <div class="user-image">
+                <img src={{userimage}} alt="vlad vnavka" title="vlad vnavka" class="img-circle" style="width:150px;height:150px;">
+                <!--"{% static 'media/def.png' %}"-->
+            </div>
+            <div class="user-info-block">
+                <div class="user-heading">
+                    <h3>{{username}}</h3>
+                    <!--<h2>{{userimage}}</h2>-->
+                </div>
+
+
+            </div>
+        </div>
+         <!--<a  href="/ImgEdit/" class="btn btn-lg btn-primary btn-block">NewPicture</a>-->
+        <!--<a  href="/AddNote/" class="btn btn-lg btn-primary btn-block">+ KNote</a>-->
+	</div>
+
+</div>
+
+<!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>-->
+
+ {% for i in knotes%}
+<div class="container">
+
+  <div class="well">
+      <div class="media">
+      	<a class="pull-left" href="#">
+    		<img class="media-object" src={{userimage}} style="width:100px;height:100px;">
+  		</a>
+  		<!--< class="media-body">-->
+    		<h4 class="media-heading"><a href="/home/knote/{{i.id}}" >{{i.knote_title}}</a></h4>
+          <p>{{i.knote_note}}</p>
+          <ul class="list-inline list-unstyled">
+  			<li><span><i class="glyphicon glyphicon-calendar"></i> {{i.knote_date}} </span></li>
+              <li> | </li>
+              <li><span><i></i>views {{i.knote_views}} (◕‿◕)(◕‿◕)</span></li>
+
+			</ul>
+            <!--<div class="col-md-3"><a  href="/home/knote_del/{{i.id}}" class="btn btn-xs btn-danger btn-block">Delete</a></div>-->
+
+            <!--<div class="col-md-3"><a  href="/home/knote_edit/{{i.id}}" class="btn btn-xs btn-success btn-block">Edit</a></div>-->
+
+
+       </div>
+
+    </div>
+
+  </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
+

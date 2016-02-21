@@ -1,0 +1,25 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+{% block register %}
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Registration page</h1>
+      </div>
+
+    </div><!-- /.container -->
+    <div class="container">
+       <!--<form class="form-signin">-->
+                <form action="/registration/reg_user/" method="post">
+                    {% csrf_token %}
+                       <h2 class="form-signin-heading">Please register</h2>
+                       <input  class="form-control" type="text" name = "login" placeholder="Login" required autofocus><span></span>
+                       <input  class="form-control" type="text" name = "name" placeholder="Name" required autofocus><span></span>
+                       <!--<p>Возраст: <input type="number" size="3"><span></span></p>-->
+                       <input  class="form-control" type="email" name = "email" placeholder="Mail" required autofocus><span></span>
+                       <input class="form-control" type="password"  name = "pass" placeholder="Pass" required autofocus><span></span>
+                   <p><input class="btn btn-lg btn-primary btn-block" type="submit" value="Send"></p>
+               </form>
+      <!--</form>-->
+    </div>
+{% endblock %}

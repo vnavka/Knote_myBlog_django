@@ -1,0 +1,51 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+{% block Knote_view %}
+
+    <br>
+    <div class="container">
+	<div class="row">
+        <div class="span2">
+            <div class="btn-group pull-right" data-toggle="buttons-radio">
+                <button class="btn active">All</button>
+                <button class="btn">Starred</button>
+            </div>
+        </div>
+        <div class="span4">
+        <form class="form-search" action="/knotes/search/" method="post">
+            <div class="input-append">
+                {% csrf_token %}
+                <input  type="text" name = "text" placeholder="enter text" required autofocus>
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+    {% for note,user,picture in data %}
+    <div class="well">
+      <div class="media">
+          <h3><a href="/people/view/{{user.id}}">{{user.username}}</a></h3>
+      	<a class="pull-left" href="/people/view/{{user.id}}">
+    		<img class="media-object" src={{picture.user_image_pass}} style="width:100px;height:100px;">
+  		</a>
+  		<!--< class="media-body">-->
+    		<h4 class="media-heading"><a href="/home/knote/{{note.id}}" >{{note.knote_title}}</a></h4>
+          <p>{{note.knote_note}}</p>
+          <ul class="list-inline list-unstyled">
+  			<li><span><i class="glyphicon glyphicon-calendar"></i> {{note.knote_date}} </span></li>
+              <li> | </li>
+              <li><span><i></i>views {{i.knote_views}} (◕‿◕)(◕‿◕)</span></li>
+              <h3>__________________________________________________________________</h3>
+
+			</ul>
+            <!--<div class="col-md-3"><a  href="/home/knote_del/{{i.id}}" class="btn btn-xs btn-danger btn-block">Delete</a></div>-->
+
+            <!--<div class="col-md-3"><a  href="/home/knote_edit/{{i.id}}" class="btn btn-xs btn-success btn-block">Edit</a></div>-->
+
+
+       </div>
+
+    </div>
+    {% endfor %}
+{% endblock %}

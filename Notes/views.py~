@@ -1,0 +1,143 @@
+from django.shortcuts import render, render_to_response,redirect
+from django.http.response import HttpResponse
+from django.template.loader import get_template
+from django.template import Context ,RequestContext
+
+from django.contrib import auth
+from django.contrib.auth.forms import UserCreationForm
+from django.core.context_processors import csrf
+from django.contrib.auth.models import User
+from Notes.models import KNote , Comments, UserImage
+
+# Create your views here.
+
+def landing_page(request):
+    args = {}
+    args['user_name'] = auth.get_user(request).username
+    return render_to_response('main_win.html',args,context_instance=RequestContext(request))
+
+def statistic_page(request):
+    args = {}
+    args['user_name'] = auth.get_user(request).username
+    return render_to_response('main_statistic.html',args)
+
+def register(request):
+    args = {}
+    args.update(csrf(request))
+    args['form'] = UserCreationForm()
+    if request.POST:
+        newuser_form = UserCreationForm(request.POST)
+        if newuser_form.is_valid():
+            newuser_form.save()
+            newuser = auth.authenticate( username = newuser_form.cleaned_data['username'],password = newuser_form.cleaned_data['password2'])
+            auth.login(request,newuser)
+            return redirect("/")
+        else:
+            args['form'] = newuser_form
+    return render_to_response("register.html",args)
+
+def test_registr(request):
+    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    user.last_name = 'Lennon'
+    user.save()
+    return render_to_response("main_win.html")
+
+def register_user_post(request):
+    args = {}
+    args = request.POST
+    user = User.objects.create_user(args['login'],
+                                    args['email'],
+                                    args['pass'])
+    print args['login']
+    user.last_name = args['name']
+    user.save()
+    # created_user = User.objects.filter(username = args['login'])[:1]
+    image = UserImage(user_image_host = User.objects.get_by_natural_key(args['login']) )
+    image.save()
+    return redirect("/statistic")
+
+def login_user(request):
+    args = {}
+    args = request.POST
+    if request.POST:
+
+        user = auth.authenticate(username=args['login'], password=args['password'] )
+
+
+        if user is not None:
+            auth.login(request,user)
+            # args['user_name_text'] = auth.get_user(request).username
+            return redirect('/')
+        else:
+            args['login_error'] = "Couldn't find user"
+            return render_to_response("main_win.html",args,context_instance=RequestContext(request))
+
+    else:
+        return render_to_response("main_win.html",args)
+
+def logout_user(request):
+    auth.logout(request)
+    return redirect("/")
+
+def show_user(request):
+    args ={}
+    args['user_name'] = auth.get_user(request).username
+    args['username'] = auth.get_user(request).username
+    args['userimage'] = UserImage.objects.filter(user_image_host = auth.get_user(request))[0].user_image_pass
+    notes =  list(KNote.objects.filter(knote_host=auth.get_user(request).pk))
+    args['knotes'] = notes
+    return render_to_response("user_page.html",args)
+
+
+def imgUpload(request):
+    args = {}
+    args.update(csrf(request))
+    return render_to_response("test.html",args,context_instance=RequestContext(request))
+
+def upload(request):
+    args = {}
+    args.update(csrf(request))
+    for count,x in enumerate(request.FILES.getlist("files")):
+        def process(f):
+            with open(
+                    "/home/vnavka/Documents/Dev/python/DB/Kursach/lincin/bin/courceLin/static/media/photo_"+str(auth.get_user(request).username+".png"),
+                    "wb+") as destination:
+                for chuck in f.chunks():
+                    destination.write(chuck)
+
+        process(x)
+
+        image = UserImage.objects.filter(user_image_host = auth.get_user(request))[0]
+        image.user_image_pass = str("/static/media/photo_"+str(auth.get_user(request).username+".png") )
+        image.save()
+
+    return redirect("/home/")
+    # return render_to_response("test.html",args,context_instance=RequestContext(request))
+
+def add_knote(request):
+    args = {}
+    args['user_name'] = auth.get_user(request).username
+    return render_to_response('notes_add.html',args,context_instance=RequestContext(request))
+
+
+
+def upload(request):
+    args = {}
+    args.update(csrf(request))
+    for count,x in enumerate(request.FILES.getlist("files")):
+        def process(f):
+            with open(
+                    "/static/media/photo.png",
+                    "wb+") as destination:
+                for chuck in f.chunks():
+                    destination.write(chuck)
+
+        process(x)
+
+
+
+
+
+
+
+

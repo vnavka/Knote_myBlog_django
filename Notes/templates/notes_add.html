@@ -1,0 +1,21 @@
+{% extends "main.html"%}
+{% load staticfiles %}
+{% block note_add %}
+<div class="container">
+    <div class="col-md-6">
+               <!--<form class="form-signin">-->
+                <form action="/AddNote/adding_note/" method="post">
+                    {% csrf_token %}
+                       <h2 class="form-signin-heading">Add KNote</h2>
+
+                       <input  class="form-control" type="text" name = "note_title" placeholder="Title" required autofocus><span></span>
+                    <br/>
+                        <textarea class="form-control" type="text" name = "note_main" placeholder="Note" required autofocus> </textarea>
+                    <br/>
+                   <p><input class="btn btn-lg btn-primary btn-block" type="submit" value="Send"></p>
+               </form>
+      <!--</form>-->
+    </div>
+
+    </div>
+{% endblock %}
